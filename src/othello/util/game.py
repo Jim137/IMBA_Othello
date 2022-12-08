@@ -52,7 +52,7 @@ class game(Board):
 
     def to_place(self, pos):
         '''Places a piece at a given valid position.'''
-        pos = self.valid_pos_list(pos if self.valid_pos_list(pos) else False)
+        pos = self.valid_pos_list(pos)
         if (pos == False):
             return False
         if self.turn == -1:
