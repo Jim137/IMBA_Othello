@@ -1,0 +1,5 @@
+questions
+1. what is contain in state / board..., good if include step
+2. folder logic
+3. repositories -> public
+
