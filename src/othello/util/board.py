@@ -18,7 +18,7 @@ class Board(object):
                 - -1 for black.
                 - 0 for empty.
         '''
-        self._board = np.zeros((8, 8))
+        self._board = np.zeros((8, 8), dtype=int)
         self._board[3, 3] = 1
         self._board[4, 4] = 1
         self._board[3, 4] = -1
@@ -26,12 +26,12 @@ class Board(object):
 
     @staticmethod
     def valid_pos_list(pos):
-        if(type(pos) == list):
+        if (type(pos) == list):
             pass
-        elif(type(pos) == str):
-            if(len(pos) != 2):
+        elif (type(pos) == str):
+            if (len(pos) != 2):
                 return False
-            if(pos[0] not in pos_sheet or pos[1] not in pos_sheet):
+            if (pos[0] not in pos_sheet or pos[1] not in pos_sheet):
                 return False
             pos = [pos_sheet[pos[0]], pos_sheet[pos[1]]]
         else:
@@ -53,7 +53,8 @@ class Board(object):
 
     def set_board(self, board):
         '''Sets the board.'''
-        self._board = board
+        for i, j in np.ndindex(board.shape):
+            self._board[i, j] = board[i, j]
 
     def __getpiece__(self, pos):
         '''Returns the color piece at a given position.'''
@@ -67,21 +68,21 @@ class Board(object):
 
     def _check_valid_move_white(self, i, j):
         '''Checks if a move is valid for white.'''
-        if(self.__getpiece__([i, j]) != 0):
+        if (self.__getpiece__([i, j]) != 0):
             return False
         for m in [-1, 0, 1]:
             for n in [-1, 0, 1]:
-                if(m == 0 and n == 0):
+                if (m == 0 and n == 0):
                     continue
-                if(i+m < 0 or i+m > 7 or j+n < 0 or j+n > 7):
+                if (i+m < 0 or i+m > 7 or j+n < 0 or j+n > 7):
                     continue
-                if(self.__getpiece__([i+m, j+n]) == -1):
+                if (self.__getpiece__([i+m, j+n]) == -1):
                     for k in range(2, 8):
-                        if(i+k*m < 0 or i+k*m > 7 or j+k*n < 0 or j+k*n > 7):
+                        if (i+k*m < 0 or i+k*m > 7 or j+k*n < 0 or j+k*n > 7):
                             break
-                        if(self.__getpiece__([i+k*m, j+k*n]) == 0):
+                        if (self.__getpiece__([i+k*m, j+k*n]) == 0):
                             break
-                        if(self.__getpiece__([i+k*m, j+k*n]) == 1):
+                        if (self.__getpiece__([i+k*m, j+k*n]) == 1):
                             return True
         return False
 
@@ -90,27 +91,27 @@ class Board(object):
         valid_moves = []
         for i in range(8):
             for j in range(8):
-                if(self._check_valid_move_white(i, j)):
+                if (self._check_valid_move_white(i, j)):
                     valid_moves.append([i, j])
         return valid_moves
 
     def _check_valid_move_black(self, i, j):
         '''Checks if a move is valid for black.'''
-        if(self.__getpiece__([i, j]) != 0):
+        if (self.__getpiece__([i, j]) != 0):
             return False
         for m in [-1, 0, 1]:
             for n in [-1, 0, 1]:
-                if(m == 0 and n == 0):
+                if (m == 0 and n == 0):
                     continue
-                if(i+m < 0 or i+m > 7 or j+n < 0 or j+n > 7):
+                if (i+m < 0 or i+m > 7 or j+n < 0 or j+n > 7):
                     continue
-                if(self.__getpiece__([i+m, j+n]) == 1):
+                if (self.__getpiece__([i+m, j+n]) == 1):
                     for k in range(2, 8):
-                        if(i+k*m < 0 or i+k*m > 7 or j+k*n < 0 or j+k*n > 7):
+                        if (i+k*m < 0 or i+k*m > 7 or j+k*n < 0 or j+k*n > 7):
                             break
-                        if(self.__getpiece__([i+k*m, j+k*n]) == 0):
+                        if (self.__getpiece__([i+k*m, j+k*n]) == 0):
                             break
-                        if(self.__getpiece__([i+k*m, j+k*n]) == -1):
+                        if (self.__getpiece__([i+k*m, j+k*n]) == -1):
                             return True
         return False
 
@@ -119,7 +120,7 @@ class Board(object):
         valid_moves = []
         for i in range(8):
             for j in range(8):
-                if(self._check_valid_move_black(i, j)):
+                if (self._check_valid_move_black(i, j)):
                     valid_moves.append([i, j])
         return valid_moves
 
@@ -127,17 +128,17 @@ class Board(object):
         '''Flips the pieces for white.'''
         for m in [-1, 0, 1]:
             for n in [-1, 0, 1]:
-                if(m == 0 and n == 0):
+                if (m == 0 and n == 0):
                     continue
-                if(i+m < 0 or i+m > 7 or j+n < 0 or j+n > 7):
+                if (i+m < 0 or i+m > 7 or j+n < 0 or j+n > 7):
                     continue
-                if(self._board[i+m, j+n] == -1):
+                if (self._board[i+m, j+n] == -1):
                     for k in range(2, 8):
-                        if(i+k*m < 0 or i+k*m > 7 or j+k*n < 0 or j+k*n > 7):
+                        if (i+k*m < 0 or i+k*m > 7 or j+k*n < 0 or j+k*n > 7):
                             break
-                        if(self.__getpiece__([i+k*m, j+k*n]) == 0):
+                        if (self.__getpiece__([i+k*m, j+k*n]) == 0):
                             break
-                        if(self.__getpiece__([i+k*m, j+k*n]) == 1):
+                        if (self.__getpiece__([i+k*m, j+k*n]) == 1):
                             for l in range(1, k):
                                 self.__setpiece__([i+l*m, j+l*n], 1)
                             break
@@ -151,17 +152,17 @@ class Board(object):
         '''Flips the pieces for black.'''
         for m in [-1, 0, 1]:
             for n in [-1, 0, 1]:
-                if(m == 0 and n == 0):
+                if (m == 0 and n == 0):
                     continue
-                if(i+m < 0 or i+m > 7 or j+n < 0 or j+n > 7):
+                if (i+m < 0 or i+m > 7 or j+n < 0 or j+n > 7):
                     continue
-                if(self._board[i+m, j+n] == 1):
+                if (self._board[i+m, j+n] == 1):
                     for k in range(2, 8):
-                        if(i+k*m < 0 or i+k*m > 7 or j+k*n < 0 or j+k*n > 7):
+                        if (i+k*m < 0 or i+k*m > 7 or j+k*n < 0 or j+k*n > 7):
                             break
-                        if(self.__getpiece__([i+k*m, j+k*n]) == 0):
+                        if (self.__getpiece__([i+k*m, j+k*n]) == 0):
                             break
-                        if(self.__getpiece__([i+k*m, j+k*n]) == -1):
+                        if (self.__getpiece__([i+k*m, j+k*n]) == -1):
                             for l in range(1, k):
                                 self.__setpiece__([i+l*m, j+l*n], -1)
                             break
@@ -170,3 +171,81 @@ class Board(object):
         '''Places a black piece on the board.'''
         self.__setpiece__([pos[0], pos[1]], -1)
         self._flip_black(pos[0], pos[1])
+
+    def pseudo_flip_white(self, pos: list):
+        '''
+        Counting how many flips can make for white.
+
+        Returns a list of positions that would be flipped.
+        '''
+        i = pos[0]
+        j = pos[1]
+        can_place = []
+        for m in [-1, 0, 1]:
+            for n in [-1, 0, 1]:
+                if (m == 0 and n == 0):
+                    continue
+                if (i+m < 0 or i+m > 7 or j+n < 0 or j+n > 7):
+                    continue
+                if (self._board[i+m, j+n] == -1):
+                    for k in range(2, 8):
+                        if (i+k*m < 0 or i+k*m > 7 or j+k*n < 0 or j+k*n > 7):
+                            break
+                        if (self.__getpiece__([i+k*m, j+k*n]) == 0):
+                            break
+                        if (self.__getpiece__([i+k*m, j+k*n]) == 1):
+                            for l in range(1, k):
+                                can_place.append([i+l*m, j+l*n])
+                            break
+        return can_place
+
+    def pseudo_flip_black(self, pos):
+        '''
+        Counting how many flips can make for black.
+
+        Returns a list of positions that would be flipped.
+        '''
+        i = pos[0]
+        j = pos[1]
+        can_place = []
+        for m in [-1, 0, 1]:
+            for n in [-1, 0, 1]:
+                if (m == 0 and n == 0):
+                    continue
+                if (i+m < 0 or i+m > 7 or j+n < 0 or j+n > 7):
+                    continue
+                if (self._board[i+m, j+n] == 1):
+                    for k in range(2, 8):
+                        if (i+k*m < 0 or i+k*m > 7 or j+k*n < 0 or j+k*n > 7):
+                            break
+                        if (self.__getpiece__([i+k*m, j+k*n]) == 0):
+                            break
+                        if (self.__getpiece__([i+k*m, j+k*n]) == -1):
+                            for l in range(1, k):
+                                can_place.append([i+l*m, j+l*n])
+                            break
+        return can_place
+
+    def print_board(self):
+        '''Prints the board.'''
+        labelsx = ['1', '2', '3', '4', '5', '6', '7', '8']
+        labelsy = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
+
+        print('  ', end='')
+        for i in range(8):
+            print(labelsx[i], end=' ')
+        print()
+        for i in range(8):
+            print(labelsy[i], end=' ')
+            for j in range(8):
+                if (self.__getpiece__([i, j]) == -1):
+                    print('○', end=' ')
+                elif (self.__getpiece__([i, j]) == 1):
+                    print('●', end=' ')
+                else:
+                    print('.', end=' ')
+            print()
+        print()
+
+    def __repr__(self):
+        return self.print_board()
