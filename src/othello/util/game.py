@@ -79,7 +79,7 @@ class game(Board):
     def count_white(self):
         '''Returns the number of white pieces.'''
         return np.count_nonzero(self.get_board() == 1)
-            
+
     def winner(self):
         '''Returns the winner.'''
         if self.end == True:
@@ -89,8 +89,5 @@ class game(Board):
                 return 'White'
             else:
                 return 'Draw'
-        else: return False
-
-    def print_board(self):
-        '''Prints the board.'''
-        print(self.get_board())
+        else:
+            return False
