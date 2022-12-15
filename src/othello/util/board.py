@@ -53,7 +53,8 @@ class Board(object):
 
     def set_board(self, board):
         '''Sets the board.'''
-        self._board = board
+        for i,j in np.ndindex(board.shape):
+            self._board[i,j] = board[i,j]
 
     def __getpiece__(self, pos):
         '''Returns the color piece at a given position.'''
@@ -170,3 +171,57 @@ class Board(object):
         '''Places a black piece on the board.'''
         self.__setpiece__([pos[0], pos[1]], -1)
         self._flip_black(pos[0], pos[1])
+
+    def pseudo_flip_white(self, pos: list):
+        '''
+        Counting how many flips can make for white.
+
+        Returns a list of positions that would be flipped.
+        '''
+        i = pos[0]
+        j = pos[1]
+        can_place = []
+        for m in [-1, 0, 1]:
+            for n in [-1, 0, 1]:
+                if(m == 0 and n == 0):
+                    continue
+                if(i+m < 0 or i+m > 7 or j+n < 0 or j+n > 7):
+                    continue
+                if(self._board[i+m, j+n] == -1):
+                    for k in range(2, 8):
+                        if(i+k*m < 0 or i+k*m > 7 or j+k*n < 0 or j+k*n > 7):
+                            break
+                        if(self.__getpiece__([i+k*m, j+k*n]) == 0):
+                            break
+                        if(self.__getpiece__([i+k*m, j+k*n]) == 1):
+                            for l in range(1, k):
+                                can_place.append([i+l*m, j+l*n])
+                            break
+        return can_place
+
+    def pseudo_flip_black(self, pos):
+        '''
+        Counting how many flips can make for black.
+
+        Returns a list of positions that would be flipped.
+        '''
+        i = pos[0]
+        j = pos[1]
+        can_place = []
+        for m in [-1, 0, 1]:
+            for n in [-1, 0, 1]:
+                if(m == 0 and n == 0):
+                    continue
+                if(i+m < 0 or i+m > 7 or j+n < 0 or j+n > 7):
+                    continue
+                if(self._board[i+m, j+n] == 1):
+                    for k in range(2, 8):
+                        if(i+k*m < 0 or i+k*m > 7 or j+k*n < 0 or j+k*n > 7):
+                            break
+                        if(self.__getpiece__([i+k*m, j+k*n]) == 0):
+                            break
+                        if(self.__getpiece__([i+k*m, j+k*n]) == -1):
+                            for l in range(1, k):
+                                can_place.append([i+l*m, j+l*n])
+                            break
+        return can_place
