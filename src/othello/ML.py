@@ -2,7 +2,7 @@
 from othello import load_from_txt
 import numpy as np
 from sklearn.model_selection import train_test_split
-from sklearn.neighbors import KNeighborsClassifier
+from sklearn.neighbors import KNeighborsRegressor
 from sklearn.metrics import accuracy_score, f1_score, recall_score, precision_score
 
 def generate_x(boards):
@@ -56,7 +56,7 @@ def KN(x,y):
 
     ktable = {'k':[], 'fscore':[], 'accuracy':[], 'precision':[], 'recall':[]}
     
-    knn = KNeighborsClassifier(n_neighbors=2, weights="uniform", algorithm="auto", 
+    knn = KNeighborsRegressor(n_neighbors=2, weights="uniform", algorithm="auto", 
         leaf_size=30, p=1, metric="minkowski", metric_params=None, n_jobs=None)
     knn.fit(x_train,y_train)
 
@@ -71,10 +71,15 @@ def KN(x,y):
     # },ignore_index=True)
 
 if __name__ == "__main__":
+    
+    # boards = [-np.ones((8,8)),np.zeros((8,8)),np.ones((8,8)),-np.ones((8,8)),np.ones((8,8))]
+    # x = generate_x(boards)
+    # y = generate_y(boards)
+    # KN(x,y)
+    
     """
-    boards = [-np.ones((8,8)),np.zeros((8,8)),np.ones((8,8)),-np.ones((8,8)),np.ones((8,8))]
+    boards = load_from_txt('train_data/15x1_w.txt')
     x = generate_x(boards)
     y = generate_y(boards)
     KN(x,y)
     """
-    
