@@ -1,7 +1,22 @@
 from collections import deque
 import sys
+import numpy as np
+from sklearn.neighbors import KNeighborsRegressor
+import pickle
+from util.game import game
+from ML import ML
+
 depth = 5 #assign in game engine
-def Minimax(state, max_turn=True): #depth of five
+class Node():
+    def __init__(self, board):
+        self.state = board
+        self.max = sys.maxsize
+        self.min = 0
+        self.parent = None
+        self.depth = 0
+        return
+
+def Minimax(match:game, max_turn=True): #depth of five
 
     if max_turn and depth%2 == 1:
         deep = depth -1
@@ -10,16 +25,7 @@ def Minimax(state, max_turn=True): #depth of five
     else:
         deep = depth -2
 
-    class Node(state):
-        def __init__(self):
-            self.state = state
-            self.max = sys.maxsize
-            self.min = 0
-            self.parent = None
-            self.depth = 0
-            return
-
-    node = Node(state) #state, minH, maxH
+    node = Node(match.get_board()) #state, minH, maxH
     queue = deque()
     states_in_max_depth = deque() #node
     while len(queue):
@@ -44,8 +50,11 @@ def Minimax(state, max_turn=True): #depth of five
 
     return best_state.state
 
-def get_value(): #get hamilitonium
-    return
+def get_value(board): #get hamilitonium
+    x = np.array(board).flatten()
+    model = pickle.load(open("model.pickle","rb"))
+    y = model.predict(x)
+    return y
 
 def get_next_states(state, max_turn=True):#vailded moves to play
     return
