@@ -246,6 +246,22 @@ class Board(object):
                     print('.', end=' ')
             print()
         print()
+    def __get_lead__(self): #white -1 black 1
+        board = np.array(self._board).flatten()
+        black_count = 0
+        white_count = 0
+        for i in board:
+            if i == 1:
+                black_count += 1
+            elif i == -1:
+                white_count += 1
+
+        if black_count > white_count:
+            return 1
+        elif white_count > black_count:
+            return -1
+        else:
+            return 0 
 
     def __repr__(self):
         return self.print_board()
