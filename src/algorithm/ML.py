@@ -68,7 +68,7 @@ class ML:
         prediction = knr.predict(x_test)
         print(y_test, prediction)
 
-        pickle.dump(knr,open('model.pickle',"wb"))
+        pickle.dump(knr,open('model/model.pickle',"wb"))
         return 
         # df_ktable = df_ktable.append({
         #     'fscore':f1_score(y_test, prediction), 
