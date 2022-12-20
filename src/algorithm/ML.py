@@ -1,5 +1,5 @@
 #generate [x]
-from othello import load_from_txt
+from ..othello.othello import load_from_txt
 import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsRegressor

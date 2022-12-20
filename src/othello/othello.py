@@ -1,5 +1,5 @@
 import numpy as np
-from util.game import game
+from .util.game import game
 
 
 def pvp():
