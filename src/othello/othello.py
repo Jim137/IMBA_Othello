@@ -23,23 +23,25 @@ def pvp():
     print('Game over. The winner is', match.winner())
 
 
-def load_from_txt(fn):
+def load_from_txt(fn, output=False):
     color, row, col = np.loadtxt(fn, dtype=int, unpack=True)
     for i in range(len(color)):
         if color[i] == 0:
             color[i] = -1
     match = game()
     round = 0
-    match.print_board()
-    board = [match.get_board()]
+    if output:
+        match.print_board()
+    board = [match.get_board().copy()]
     while match.end == False:
         if round == len(color):
             print('Check file', fn, 'for invalid number of moves (Game does not end).')
             return
         if match.turn == color[round]:
             if match.to_place([row[round], col[round]]):
-                match.print_board()
-                board.append(match.get_board())
+                if output:
+                    match.print_board()
+                board.append(match.get_board().copy())
                 round += 1
             else:
                 print('Check file', fn, 'for invalid move at round =.',round+1)

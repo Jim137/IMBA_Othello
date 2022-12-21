@@ -3,8 +3,8 @@ import sys
 import numpy as np
 from sklearn.neighbors import KNeighborsRegressor
 import pickle
-from ..othello.util.game import game
-from .ML import ML
+from othello.util.game import game
+from .ML import *
 
 depth = 5 #assign in game engine
 class Node():
