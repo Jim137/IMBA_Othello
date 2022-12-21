@@ -3,8 +3,8 @@ import sys
 import numpy as np
 from sklearn.neighbors import KNeighborsRegressor
 import pickle
-from util.game import game
-from ML import ML
+from othello.util.game import game
+from .ML import *
 
 depth = 5 #assign in game engine
 class Node():
@@ -52,7 +52,7 @@ def Minimax(match:game, max_turn=True): #depth of five
 
 def get_value(board): #get hamilitonium
     x = np.array(board).flatten()
-    model = pickle.load(open("model.pickle","rb"))
+    model = pickle.load(open("model/model.pickle","rb"))
     y = model.predict(x)
     return y
 

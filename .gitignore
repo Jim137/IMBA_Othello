@@ -1,5 +1,6 @@
 .vscode/
 train_data/
+model/
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

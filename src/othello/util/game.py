@@ -80,6 +80,15 @@ class game(Board):
         '''Returns the number of white pieces.'''
         return np.count_nonzero(self.get_board() == 1)
 
+    def get_lead(self):
+        '''Returns side of the lead.'''
+        if self.count_black() > self.count_white():
+            return -1
+        elif self.count_black() < self.count_white():
+            return 1
+        else:
+            return 0 
+
     def winner(self):
         '''Returns the winner.'''
         if self.end == True:
