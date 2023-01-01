@@ -246,6 +246,7 @@ class Board(object):
                     print('.', end=' ')
             print()
         print()
+<<<<<<< HEAD
     def __get_lead__(self): #white -1 black 1
         board = np.array(self._board).flatten()
         black_count = 0
@@ -262,6 +263,8 @@ class Board(object):
             return 1
         else:
             return 0 
+=======
+>>>>>>> 3201491c10c553ed0b11dc425da2ef4e8a049c1e
 
     def __repr__(self):
         return self.print_board()
