@@ -3,7 +3,7 @@ import sys
 import numpy as np
 from sklearn.neighbors import KNeighborsRegressor
 import pickle
-from util.game import game
+from .util.game import game
 from ML import ML
 
 depth = 5 #assign in game engine

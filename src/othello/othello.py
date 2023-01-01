@@ -31,15 +31,16 @@ def load_from_txt(fn):
     match = game()
     round = 0
     match.print_board()
-    board = [match.get_board()]
+    board = [match.get_board().copy()]
+    print("board[0]", board)
     while match.end == False:
         if round == len(color):
             print('Check file', fn, 'for invalid number of moves (Game does not end).')
             return
         if match.turn == color[round]:
             if match.to_place([row[round], col[round]]):
-                match.print_board()
-                board.append(match.get_board())
+                # match.print_board()
+                board.append(match.get_board().copy())
                 round += 1
             else:
                 print('Check file', fn, 'for invalid move at round =.',round+1)

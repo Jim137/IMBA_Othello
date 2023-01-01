@@ -257,9 +257,9 @@ class Board(object):
                 white_count += 1
 
         if black_count > white_count:
-            return 1
-        elif white_count > black_count:
             return -1
+        elif white_count > black_count:
+            return 1
         else:
             return 0 
 

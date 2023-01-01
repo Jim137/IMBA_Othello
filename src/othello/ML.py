@@ -79,11 +79,12 @@ class ML:
 
 if __name__ == "__main__":
     
-    boards = [-np.ones((8,8)),np.zeros((8,8)),np.ones((8,8)),-np.ones((8,8)),np.ones((8,8))]
-    x = ML.generate_x(boards)
-    y = ML.generate_y(boards)
-    ML.KNR(x,y)
-
+    # boards = [-np.ones((8,8)),np.zeros((8,8)),np.ones((8,8)),-np.ones((8,8)),np.ones((8,8))]
+    # x = ML.generate_x(boards)
+    # y = ML.generate_y(boards)
+    # ML.KNR(x,y)
+    boards = load_from_txt('train_data/15x1_w.txt')
+    print(boards[0])
     """
     boards = load_from_txt('train_data/15x1_w.txt')
     x = generate_x(boards)
