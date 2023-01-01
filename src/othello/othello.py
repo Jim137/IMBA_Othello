@@ -29,7 +29,7 @@ def load_from_txt(fn, output=False):
             color[i] = -1
     match = game()
     round = 0
-    match.print_board()
+    # match.print_board()
     board = [match.get_board().copy()]
     while match.end == False:
         if round == len(color):
@@ -89,3 +89,24 @@ def GreedyBot(strategy=1):
         else:
             print('Invalid position. Please try again.')
     print('Game over. The winner is', match.winner())
+
+def ML_process():
+    boards = load_from_txt('train_data/15x1_w.txt')
+    white_turn_boards = []
+    black_turn_boards = []
+    for i in range(len(boards)):
+        if i%2 == 0: #black
+            black_turn_boards.append(boards[i])
+        elif i%2 == 1: #white
+            white_turn_boards.append(boards[i])
+
+    #train white model
+    white_x = generate_x(white_turn_boards)
+    white_y = generate_y(white_turn_boards, white_x, 1)
+    KNR(white_x,white_y,'model_white')
+
+    #train black model
+    black_x = generate_x(black_turn_boards)
+    black_y = generate_y(black_turn_boards, black_x, -1)
+    KNR(black_x,black_y,'model_black')
+    return
