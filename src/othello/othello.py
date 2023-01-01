@@ -1,7 +1,6 @@
 import numpy as np
 from .util.game import game
 
-
 def pvp():
     match = game()
     match.print_board()
@@ -30,27 +29,15 @@ def load_from_txt(fn, output=False):
             color[i] = -1
     match = game()
     round = 0
-<<<<<<< HEAD
     match.print_board()
     board = [match.get_board().copy()]
-    print("board[0]", board)
-=======
-    if output:
-        match.print_board()
-    board = [match.get_board().copy()]
->>>>>>> 3201491c10c553ed0b11dc425da2ef4e8a049c1e
     while match.end == False:
         if round == len(color):
             print('Check file', fn, 'for invalid number of moves (Game does not end).')
             return
         if match.turn == color[round]:
             if match.to_place([row[round], col[round]]):
-<<<<<<< HEAD
                 # match.print_board()
-=======
-                if output:
-                    match.print_board()
->>>>>>> 3201491c10c553ed0b11dc425da2ef4e8a049c1e
                 board.append(match.get_board().copy())
                 round += 1
             else:

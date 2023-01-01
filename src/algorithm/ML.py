@@ -3,7 +3,6 @@ from othello.othello import load_from_txt
 import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsRegressor
-from othello.util.game import game
 import pickle
 from sklearn.metrics import accuracy_score, f1_score, recall_score, precision_score
 
