@@ -2,7 +2,6 @@
 import sys 
 sys.path.append('../')
 
-from othello.othello import load_from_txt
 from othello.util.game import game
 import numpy as np
 from sklearn.model_selection import train_test_split
@@ -32,35 +31,38 @@ def generate_x(boards): #load a file of boards
         output_x[n][:] = xixj
     return output_x
 
-def generate_y(boards, output_x, mobility=10., turn=-1):
+def generate_white_y(boards, output_x, mobility=10.):
     output_y = np.zeros(len(boards))
-    valid_move = 0
+    valid_move = 0    
 
-    if turn == 1:#white
-        for n, board in enumerate(boards):
-            b = game()
-            b.set_board(board)
+    for n, board in enumerate(boards):
+        b = game()
+        b.set_board(board)
 
-            valid_move = len(b.valid_move_white())
-            valid_move = mobility * valid_move
+        valid_move = len(b.valid_move_white())
+        valid_move = mobility * valid_move
 
-            for i, x in enumerate(output_x[n]):
-                output_y[n] += x * vmap_flat[i]
+        for i, x in enumerate(output_x[n]):
+            output_y[n] += x * vmap_flat[i]
 
-            output_y[n] += valid_move
+        output_y[n] += valid_move
+    return output_y
 
-    if turn == -1:#black
-        for n, board in enumerate(boards):
-            b = game()
-            b.set_board(board)
+def generate_black_y(boards, output_x, mobility=10.):
+    output_y = np.zeros(len(boards))
+    valid_move = 0  
 
-            valid_move = len(b.valid_move_black())
-            valid_move = mobility * valid_move
+    for n, board in enumerate(boards):
+        b = game()
+        b.set_board(board)
 
-            for i, x in enumerate(output_x[n]):
-                output_y[n] += x * vmap_flat[i] 
+        valid_move = len(b.valid_move_black())
+        valid_move = mobility * valid_move
 
-            output_y[n] -= valid_move#black for negative
+        for i, x in enumerate(output_x[n]):
+            output_y[n] += x * vmap_flat[i] 
+
+        output_y[n] -= valid_move#black for negative
 
     return output_y 
 
@@ -74,7 +76,7 @@ def KNR(x,y,model_name=str):
     knr.fit(x_train,y_train)
 
     prediction = knr.predict(x_test)
-    print('ytest= ', y_test, 'prediction=', prediction)
+    # print('ytest= ', y_test, 'prediction=', prediction)
 
     pickle.dump(knr,open('model/'+model_name+'.pickle',"wb"))
     return 

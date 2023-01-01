@@ -1,5 +1,4 @@
-from algorithm.ML import *
-from othello.othello import pvp, load_from_txt, GreedyBot
+from othello.othello import pvp, load_from_txt, GreedyBot,ML_process
 
 if __name__ == "__main__":
     # pvp()

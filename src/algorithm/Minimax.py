@@ -50,7 +50,7 @@ def Minimax(match:game, max_turn=True): #depth of five
 
     return best_state.state
 
-def get_value(board): #get hamilitonium
+def get_white_value(board): #get hamilitonium
     x = np.array(board).flatten()
     model = pickle.load(open("model/model.pickle","rb"))
     y = model.predict(x)
