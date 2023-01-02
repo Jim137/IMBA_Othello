@@ -106,11 +106,12 @@ def ML_process():
     #train white model
     white_x = generate_x(white_turn_boards)
     white_y = generate_white_y(white_turn_boards, white_x, 1)
+    
     KNR(white_x,white_y,'model_white')
 
     #train black model
     black_x = generate_x(black_turn_boards)
-    black_y = generate_black_y(black_turn_boards, black_x, -1)
+    black_y = generate_black_y(black_turn_boards, black_x, 1)
     KNR(black_x,black_y,'model_black')
     return
 

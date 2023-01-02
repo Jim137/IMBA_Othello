@@ -1,8 +1,8 @@
 #generate [x]
 import sys 
 sys.path.append('../')
-
 from othello.util.game import game
+
 import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsRegressor
@@ -81,8 +81,9 @@ def KNR(x,y,model_name=str):
     pickle.dump(knr,open('model/'+model_name+'.pickle',"wb"))
     return 
 
-if __name__ == "__main__":
-    boards = load_from_txt('train_data/15x1_w.txt')
-    x = generate_x(boards)
-    y = generate_y(boards,x)
-    KNR(x,y)
+# if __name__ == "__main__":
+    # boards = load_from_txt('train_data/15x1_w.txt')
+    # x = generate_x(boards)
+    # y = generate_black_y(boards,x)
+    # KNR(x,y)
+    
