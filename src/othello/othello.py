@@ -72,6 +72,7 @@ def GreedyBot(strategy=1):
                 for i in valid_moves:
                     number_of_flips.append(len(match.pseudo_flip_white(i)))
                 pos = valid_moves[number_of_flips.index(max(number_of_flips))]
+                
             elif strategy == 2:
                 valid_moves = match.valid_move_white()
                 number_of_actions = []
@@ -85,6 +86,7 @@ def GreedyBot(strategy=1):
             else:
                 print('Invalid strategy.')
                 return
+        print('...',pos)
         if match.to_place(pos):
             match.print_board()
         else:
@@ -111,3 +113,47 @@ def ML_process():
     black_y = generate_black_y(black_turn_boards, black_x, -1)
     KNR(black_x,black_y,'model_black')
     return
+
+def IsingModel(strategy=1):
+    '''
+    GreedyBot plays against the player.
+    strategy = 1: GreedyBot plays the move that flips the most pieces.
+    strategy = 2: GreedyBot plays the move that gives the least actions to the player.
+    '''
+    match = game()
+    match.print_board()
+    while match.end == False:
+        if match.turn == -1:
+            print('Your turn')
+            print('Your valid moves:', str(
+                match.pos_name(match.valid_move_black())).upper())
+            pos = input(
+                'Please enter the position you want to place a piece: ').lower().strip()
+        else:
+            if strategy == 1:
+                valid_moves = match.valid_move_white()
+                number_of_flips = []
+                for i in valid_moves:
+                    number_of_flips.append(len(match.pseudo_flip_white(i)))
+                pos = valid_moves[number_of_flips.index(max(number_of_flips))]
+                
+            elif strategy == 2:
+                valid_moves = match.valid_move_white()
+                number_of_actions = []
+                for i in valid_moves:
+                    tmp_match = game()
+                    tmp_match.set_board(match.get_board())
+                    tmp_match.turn = 1
+                    tmp_match.to_place(i)
+                    number_of_actions.append(len(tmp_match.valid_move_black()))
+                pos = valid_moves[number_of_actions.index(min(number_of_actions))]
+            else:
+                print('Invalid strategy.')
+                return
+
+        if match.to_place(pos):
+            
+            match.print_board()
+        else:
+            print('Invalid position. Please try again.')
+    print('Game over. The winner is', match.winner())
