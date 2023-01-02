@@ -31,7 +31,6 @@ def Min_Player(Game:game):
     board.set_board(Game.get_board().copy())
     start_node = Node(board, -1)
 
-    tree_depth = 0
     queue = [start_node]
     min_value = (sys.maxsize,list())
 
