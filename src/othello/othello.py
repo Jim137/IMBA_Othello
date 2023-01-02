@@ -1,6 +1,7 @@
 import numpy as np
 from .util.game import game
 from algorithm.ML import *
+from algorithm.Minimax import *
 
 def pvp():
     match = game()
@@ -115,46 +116,42 @@ def ML_process():
     KNR(black_x,black_y,'model_black')
     return
 
-def IsingModel(strategy=1):
-    '''
-    GreedyBot plays against the player.
-    strategy = 1: GreedyBot plays the move that flips the most pieces.
-    strategy = 2: GreedyBot plays the move that gives the least actions to the player.
-    '''
+def IsingModel_white():
     match = game()
     match.print_board()
     while match.end == False:
-        if match.turn == -1:
+        if match.turn == 1:
+            pos = Max_Player(match, 3)
+        else:
             print('Your turn')
             print('Your valid moves:', str(
                 match.pos_name(match.valid_move_black())).upper())
             pos = input(
                 'Please enter the position you want to place a piece: ').lower().strip()
-        else:
-            if strategy == 1:
-                valid_moves = match.valid_move_white()
-                number_of_flips = []
-                for i in valid_moves:
-                    number_of_flips.append(len(match.pseudo_flip_white(i)))
-                pos = valid_moves[number_of_flips.index(max(number_of_flips))]
-                
-            elif strategy == 2:
-                valid_moves = match.valid_move_white()
-                number_of_actions = []
-                for i in valid_moves:
-                    tmp_match = game()
-                    tmp_match.set_board(match.get_board())
-                    tmp_match.turn = 1
-                    tmp_match.to_place(i)
-                    number_of_actions.append(len(tmp_match.valid_move_black()))
-                pos = valid_moves[number_of_actions.index(min(number_of_actions))]
-            else:
-                print('Invalid strategy.')
-                return
 
         if match.to_place(pos):
-            
             match.print_board()
         else:
             print('Invalid position. Please try again.')
     print('Game over. The winner is', match.winner())
+    return
+
+def IsingModel_black():
+    match = game()
+    match.print_board()
+    while match.end == False:
+        if match.turn == -1:
+            pos = Min_Player(match, 1)
+        else:
+            print('Your turn')
+            print('Your valid moves:', str(
+                match.pos_name(match.valid_move_white())).upper())
+            pos = input(
+                'Please enter the position you want to place a piece: ').lower().strip()
+
+        if match.to_place(pos):
+            match.print_board()
+        else:
+            print('Invalid position. Please try again.')
+    print('Game over. The winner is', match.winner())
+    return
