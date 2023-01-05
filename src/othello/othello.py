@@ -48,7 +48,7 @@ def load_from_txt(fn, output=False):
         else:
             print('Check file', fn, 'for invalid turn at round =.',round+1)
             return
-    print('Game over. The winner is', match.winner())
+    # print('Game over. The winner is', match.winner())
     return board
 
 def GreedyBot(strategy=1):
@@ -94,34 +94,35 @@ def GreedyBot(strategy=1):
             print('Invalid position. Please try again.')
     print('Game over. The winner is', match.winner())
 
-def ML_process():
-    boards = load_from_txt('train_data/15x1_w.txt')
+def ML_process(file:list,mobility=10.):
     white_turn_boards = []
     black_turn_boards = []
-    for i in range(len(boards)):
-        if i%2 == 0: #black
-            black_turn_boards.append(boards[i])
-        elif i%2 == 1: #white
-            white_turn_boards.append(boards[i])
+    for f in file:
+        boards = load_from_txt(f)
+        for i in range(len(boards)):
+            if i%2 == 0: #black
+                black_turn_boards.append(boards[i])
+            elif i%2 == 1: #white
+                white_turn_boards.append(boards[i])
 
     #train white model
     white_x = generate_x(white_turn_boards)
-    white_y = generate_white_y(white_turn_boards, white_x, 1)
+    white_y = generate_white_y(white_turn_boards, white_x, mobility)
     
     KNR(white_x,white_y,'model_white')
 
     #train black model
     black_x = generate_x(black_turn_boards)
-    black_y = generate_black_y(black_turn_boards, black_x, 1)
+    black_y = generate_black_y(black_turn_boards, black_x, mobility)
     KNR(black_x,black_y,'model_black')
     return
 
-def IsingModel_white():
+def IsingModel_white(Depth=5):
     match = game()
     match.print_board()
     while match.end == False:
         if match.turn == 1:
-            pos = Max_Player(match, 3)
+            pos = Max_Player(match, Depth)
         else:
             print('Your turn')
             print('Your valid moves:', str(
@@ -136,12 +137,12 @@ def IsingModel_white():
     print('Game over. The winner is', match.winner())
     return
 
-def IsingModel_black():
+def IsingModel_black(Depth=5):
     match = game()
     match.print_board()
     while match.end == False:
         if match.turn == -1:
-            pos = Min_Player(match, 1)
+            pos = Min_Player(match, Depth)
         else:
             print('Your turn')
             print('Your valid moves:', str(
