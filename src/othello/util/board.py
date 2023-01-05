@@ -244,7 +244,11 @@ class Board(object):
                     print('●', end=' ')
                 else:
                     print('.', end=' ')
+            print(labelsy[i], end=' ')
             print()
+        print('  ', end='')
+        for i in range(8):
+            print(labelsx[i], end=' ')
         print()
 
     def __repr__(self):

@@ -31,16 +31,18 @@ def load_from_txt(fn, output=False):
             color[i] = -1
     match = game()
     round = 0
-    # match.print_board()
-    board = [match.get_board().copy()]
+    if output: match.print_board()
+    board = []
+    turn = []
     while match.end == False:
         if round == len(color):
             print('Check file', fn, 'for invalid number of moves (Game does not end).')
             return
         if match.turn == color[round]:
             if match.to_place([row[round], col[round]]):
-                # match.print_board()
+                if output: match.print_board()
                 board.append(match.get_board().copy())
+                turn.append(match.turn)
                 round += 1
             else:
                 print('Check file', fn, 'for invalid move at round =.',round+1)
@@ -48,8 +50,9 @@ def load_from_txt(fn, output=False):
         else:
             print('Check file', fn, 'for invalid turn at round =.',round+1)
             return
-    print('Game over. The winner is', match.winner())
-    return board
+    if output: print('Game over. The winner is', match.winner())
+    print('File', fn, 'has been loaded.')
+    return board, turn, match.winner()
 
 def GreedyBot(strategy=1):
     '''
@@ -87,48 +90,34 @@ def GreedyBot(strategy=1):
             else:
                 print('Invalid strategy.')
                 return
-        print('...',pos)
+        print('...',match.pos_name([pos])[0].upper())
         if match.to_place(pos):
             match.print_board()
         else:
             print('Invalid position. Please try again.')
     print('Game over. The winner is', match.winner())
 
-def ML_process():
-    boards = load_from_txt('train_data/15x1_w.txt')
-    white_turn_boards = []
-    black_turn_boards = []
-    for i in range(len(boards)):
-        if i%2 == 0: #black
-            black_turn_boards.append(boards[i])
-        elif i%2 == 1: #white
-            white_turn_boards.append(boards[i])
-
-    #train white model
-    white_x = generate_x(white_turn_boards)
-    white_y = generate_white_y(white_turn_boards, white_x, 1)
-    
-    KNR(white_x,white_y,'model_white')
-
-    #train black model
-    black_x = generate_x(black_turn_boards)
-    black_y = generate_black_y(black_turn_boards, black_x, 1)
-    KNR(black_x,black_y,'model_black')
-    return
-
-def IsingModel_white():
+def ML(turn=1,depth = 3):
+    '''
+    ML bot plays against the player.
+    turn = 1: ML bot plays white.
+    turn = -1: ML bot plays black.
+    '''
     match = game()
     match.print_board()
     while match.end == False:
-        if match.turn == 1:
-            pos = Max_Player(match, 3)
+        if match.turn == 1*turn:
+            if turn == 1:
+                pos = White_Player(match, depth)
+            else:
+                pos = Black_Player(match, depth)
+            print('...',match.pos_name([pos])[0].upper())
         else:
             print('Your turn')
             print('Your valid moves:', str(
                 match.pos_name(match.valid_move_black())).upper())
             pos = input(
                 'Please enter the position you want to place a piece: ').lower().strip()
-
         if match.to_place(pos):
             match.print_board()
         else:
@@ -136,22 +125,54 @@ def IsingModel_white():
     print('Game over. The winner is', match.winner())
     return
 
-def IsingModel_black():
+def Ising_vs_greedy(turn=1,strategy=1,depth = 3):
     match = game()
     match.print_board()
     while match.end == False:
-        if match.turn == -1:
-            pos = Min_Player(match, 1)
+        if match.turn == -1*turn:
+            if turn == 1:
+                pos = Black_Player(match, depth)
+            else:
+                pos = White_Player(match, depth)
         else:
-            print('Your turn')
-            print('Your valid moves:', str(
-                match.pos_name(match.valid_move_white())).upper())
-            pos = input(
-                'Please enter the position you want to place a piece: ').lower().strip()
-
+            if strategy == 1*turn:
+                if turn == 1:
+                    valid_moves = match.valid_move_white()
+                else:
+                    valid_moves = match.valid_move_black()
+                number_of_flips = []
+                for i in valid_moves:
+                    if turn == 1:
+                        number_of_flips.append(len(match.pseudo_flip_white(i)))
+                    else:
+                        number_of_flips.append(len(match.pseudo_flip_black(i)))
+                pos = valid_moves[number_of_flips.index(max(number_of_flips))]
+            elif strategy == 2:
+                if turn == 1:
+                    valid_moves = match.valid_move_white()
+                else:
+                    valid_moves = match.valid_move_black()
+                number_of_actions = []
+                for i in valid_moves:
+                    tmp_match = game()
+                    tmp_match.set_board(match.get_board())
+                    tmp_match.turn = 1*turn
+                    tmp_match.to_place(i)
+                    if turn == 1:
+                        number_of_actions.append(len(tmp_match.valid_move_black()))
+                    else:
+                        number_of_actions.append(len(tmp_match.valid_move_white()))
+                pos = valid_moves[number_of_actions.index(min(number_of_actions))]
+            else:
+                print('Invalid strategy.')
+                return
+        print('ML:' if match.turn == -1*turn else 'Greedy:',match.pos_name([pos])[0].upper())
         if match.to_place(pos):
             match.print_board()
         else:
             print('Invalid position. Please try again.')
-    print('Game over. The winner is', match.winner())
+    if match.winner() == 'Draw':
+        print('Game over. Draw')
+        return
+    print('Game over. The winner is', 'ML' if (turn ==1 and match.winner()=='Black') or (turn == -1 and match.winner == 'White') else 'Greedy')
     return

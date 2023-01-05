@@ -8,7 +8,7 @@ sys.path.append('../')
 from othello.util.game import game
 from othello.util.board import Board
 
-depth = 3 #assign in game engine
+
 class Node():
     def __init__(self, board, turn):
         self.board = board
@@ -24,19 +24,26 @@ class Node():
         # self.min = -sys.maxsize
         return
 
-def Min_Player(Game:game, Depth): #play black
+def Black_Player(Game:game, Depth):
     pos = list()
     board = Board()
     board.set_board(Game.get_board().copy())
+    
+    valid_moves = board.valid_move_black()
+    for move in valid_moves:
+        for corner in [[0,0],[0,7],[7,0],[7,7]]:
+            if move == corner:
+                return move
+    
     start_node = Node(board, -1)
     if Depth %2 ==0: Depth +=1
 
     queue = [start_node]
-    min_value = (sys.maxsize,list())
+    min_value = (sys.maxsize,Node(board, -1))
 
     while(queue):
         current_node = queue.pop()
-        if check_endgame(current_node) and current_node.turn == -1:
+        if (check_endgame(current_node) and current_node.turn == -1) or (current_node.board.valid_move_black() == [] and current_node.turn == -1) or (current_node.board.valid_move_white() == [] and current_node.turn == 1):
             while True:
                 if current_node.depth > 1:
                     current_node = current_node.parent
@@ -54,7 +61,7 @@ def Min_Player(Game:game, Depth): #play black
                     next_node = Node(next_board, turn=1)
                     next_node.pos = move
                     next_node.parent = current_node
-                    next_node.depth += 1
+                    next_node.depth = current_node.depth + 1
                     queue.append(next_node)
                     
             elif current_node.turn == 1: #white
@@ -65,7 +72,7 @@ def Min_Player(Game:game, Depth): #play black
                     next_node = Node(next_board, turn=-1)
                     next_node.pos = move
                     next_node.parent = current_node
-                    next_node.depth += 1
+                    next_node.depth = current_node.depth + 1
                     queue.append(next_node)
 
         else: #get value
@@ -89,19 +96,26 @@ def Min_Player(Game:game, Depth): #play black
 
     return pos
 
-def Max_Player(Game:game, Depth): #play black
+def White_Player(Game:game, Depth):
     pos = list()
     board = Board()
     board.set_board(Game.get_board().copy())
+    
+    valid_moves = board.valid_move_white()
+    for move in valid_moves:
+        for corner in [[0,0],[0,7],[7,0],[7,7]]:
+            if move == corner:
+                return move
+    
     start_node = Node(board, 1)
     if Depth %2 ==0: Depth +=1
 
     queue = [start_node]
-    max_value = (-sys.maxsize,list())
+    max_value = (-sys.maxsize,Node(board, 1))
 
     while(queue):
         current_node = queue.pop()
-        if check_endgame(current_node) and current_node.turn == 1:
+        if (check_endgame(current_node) and current_node.turn == 1) or (current_node.board.valid_move_black() == [] and current_node.turn == -1) or (current_node.board.valid_move_white() == [] and current_node.turn == 1):
             while True:
                 if current_node.depth > 1:
                     current_node = current_node.parent
@@ -119,7 +133,7 @@ def Max_Player(Game:game, Depth): #play black
                     next_node = Node(next_board, turn=1)
                     next_node.pos = move
                     next_node.parent = current_node
-                    next_node.depth += 1
+                    next_node.depth = current_node.depth + 1
                     queue.append(next_node)
                     
             elif current_node.turn == 1: #white
@@ -130,7 +144,7 @@ def Max_Player(Game:game, Depth): #play black
                     next_node = Node(next_board, turn=-1)
                     next_node.pos = move
                     next_node.parent = current_node
-                    next_node.depth += 1
+                    next_node.depth = current_node.depth + 1
                     queue.append(next_node)
 
         else: #get value
@@ -160,13 +174,13 @@ def check_endgame(current_node:Node):
     EndGame.check_next_turn()
     return EndGame.end
 
-def get_white_value(board): #get hamilitonium
+def get_white_value(board):
     x = [np.array(board).flatten()]
     model = pickle.load(open("model/model_white.pickle","rb"))
     y = model.predict(x)
     return y
 
-def get_black_value(board): #get hamilitonium
+def get_black_value(board):
     x = [np.array(board).flatten()]
     model = pickle.load(open("model/model_black.pickle","rb"))
     y = model.predict(x)
