@@ -7,7 +7,7 @@ from othello.util.game import game
 if __name__ == "__main__":
     # pvp()
     # boards = load_from_txt('train_data/15x1_w.txt')
-    # GreedyBot(1)4+
+    # GreedyBot(1)
     file = ['train_data/15x1_w.txt','train_data/15x2_w.txt']
     ML_process(file, 10) #mobility parameter
     # IsingModel_black(5)
