@@ -71,7 +71,7 @@ def KNR(x,y,model_name=str):
 
     ktable = {'k':[], 'fscore':[], 'accuracy':[], 'precision':[], 'recall':[]}
     
-    knr = KNeighborsRegressor(n_neighbors=2, weights="uniform", algorithm="auto", 
+    knr = KNeighborsRegressor(n_neighbors=4, weights="uniform", algorithm="auto", 
         leaf_size=30, p=1, metric="minkowski", metric_params=None, n_jobs=None)
     knr.fit(x_train,y_train)
 
@@ -80,10 +80,4 @@ def KNR(x,y,model_name=str):
 
     pickle.dump(knr,open('model/'+model_name+'.pickle',"wb"))
     return 
-
-# if __name__ == "__main__":
-    # boards = load_from_txt('train_data/15x1_w.txt')
-    # x = generate_x(boards)
-    # y = generate_black_y(boards,x)
-    # KNR(x,y)
     
