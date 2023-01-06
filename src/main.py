@@ -42,6 +42,13 @@ if __name__ == "__main__":
     # pvp()
     # boards = load_from_txt('train_data/15x1_w.txt')
     # GreedyBot(1)
+
     # ML_process()
     ML(depth=5)
     # Ising_vs_greedy(strategy=2,depth=5)
+
+    file = ['train_data/15x1_w.txt','train_data/15x2_w.txt']
+    ML_process(file, 10) #mobility parameter
+    # IsingModel_black(5)
+    # IsingModel_white(5)
+
