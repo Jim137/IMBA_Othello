@@ -43,6 +43,8 @@ if __name__ == "__main__":
     # boards = load_from_txt('train_data/15x1_w.txt')
     # GreedyBot(1)
     # ML_process()
-    ML(depth=5)
-    # Ising_vs_greedy(strategy=2,depth=5)
+    # ML(depth=5)
+    ML_process(mobility=5.)
+    # Ising_vs_greedy(strategy=1,depth=3)
+    Ising_vs_greedy(-1,strategy=1,depth=3)
 

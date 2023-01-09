@@ -39,13 +39,13 @@ def generate_white_y(boards, output_x, mobility=10.):
         b = game()
         b.set_board(board)
 
-        valid_move = len(b.valid_move_white())
-        valid_move = mobility * valid_move
+        valid_move = len(b.valid_move_black()) #think about this
+        valid_move = mobility * valid_move 
 
         for i, x in enumerate(output_x[n]):
             output_y[n] += x * vmap_flat[i]
 
-        output_y[n] += valid_move
+        output_y[n] -= valid_move
     return output_y
 
 def generate_black_y(boards, output_x, mobility=10.):
@@ -56,13 +56,13 @@ def generate_black_y(boards, output_x, mobility=10.):
         b = game()
         b.set_board(board)
 
-        valid_move = len(b.valid_move_black())
+        valid_move = len(b.valid_move_white())
         valid_move = mobility * valid_move
 
         for i, x in enumerate(output_x[n]):
             output_y[n] += x * vmap_flat[i] 
 
-        output_y[n] -= valid_move#black for negative
+        output_y[n] += valid_move
 
     return output_y 
 

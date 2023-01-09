@@ -111,7 +111,7 @@ def White_Player(Game:game, Depth):
     if Depth %2 ==0: Depth +=1
 
     queue = [start_node]
-    max_value = (-sys.maxsize,Node(board, 1))
+    max_value = (-sys.maxsize,start_node)
 
     while(queue):
         current_node = queue.pop()

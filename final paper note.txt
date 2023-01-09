@@ -1,0 +1,4 @@
+"0109"
+1. 把 Hamilitoion 印出來
+2. 可以把validation accuracy 寫出來
+3. 改 Hamilitoion 的算法 (整個棋盤)
