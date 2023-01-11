@@ -246,5 +246,9 @@ def Ising_vs_greedy_with_Ham(turn=1,strategy=1,depth = 3, mobility=10.):
     print('white', white_Hams)
     plt.plot(x, black_Hams, color='k')
     plt.plot(x, white_Hams,  color='r')
+
+    plt.title('Ising Model vs Greedy(2), depth=3, mobility=10.')
+    plt.ylabel('Hamiltonian')
+    plt.xlabel('Turns')
     plt.show()
     return

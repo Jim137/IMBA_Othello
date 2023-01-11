@@ -155,7 +155,7 @@ class game(Board):
 
         b = game()
         b.set_board(board)
-        valid_move = len(b.valid_move_white())
+        valid_move = len(b.valid_move_black())
         valid_move = mobility * valid_move
         
         for i, s in enumerate(output_xs):

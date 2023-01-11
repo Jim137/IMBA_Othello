@@ -47,7 +47,7 @@ if __name__ == "__main__":
     # GreedyBot(1)
     # ML_process()
     # ML(depth=5)
-    ML_process(mobility=10.)
-    Ising_vs_greedy_with_Ham(strategy=2,depth=3,mobility=10.)
+    ML_process(mobility=100.)
+    Ising_vs_greedy_with_Ham(strategy=2,depth=3,mobility=100.)
     # Ising_vs_greedy(-1,strategy=1,depth=3)
 
