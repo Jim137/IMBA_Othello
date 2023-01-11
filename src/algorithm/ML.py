@@ -1,4 +1,3 @@
-#generate [x]
 import sys 
 sys.path.append('../')
 from othello.util.game import game
