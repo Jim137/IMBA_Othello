@@ -101,14 +101,19 @@ def GreedyBot(strategy=1):
     print('Game over. The winner is', match.winner())
 
 
-def ML(turn=1,depth = 3):
+def ML(turn=1,depth = 3,mobility=100.):
     '''
     ML bot plays against the player.
     turn = 1: ML bot plays white.
     turn = -1: ML bot plays black.
     '''
     match = game()
+    black_Hams = []
+    white_Hams = []
     match.print_board()
+    black_ham, white_ham = match.get_Hamiltonian(mobility)
+    black_Hams.append(black_ham)
+    white_Hams.append(white_ham)
     while match.end == False:
         if match.turn == 1*turn:
             if turn == 1:
@@ -124,9 +129,22 @@ def ML(turn=1,depth = 3):
                 'Please enter the position you want to place a piece: ').lower().strip()
         if match.to_place(pos):
             match.print_board()
+            black_ham, white_ham = match.get_Hamiltonian(mobility)
+            black_Hams.append(black_ham)
+            white_Hams.append(white_ham)
         else:
             print('Invalid position. Please try again.')
     print('Game over. The winner is', match.winner())
+    x = np.linspace(0,len(black_Hams),len(black_Hams))
+    print('black', black_Hams)
+    print('white', white_Hams)
+    plt.plot(x, black_Hams, color='k')
+    plt.plot(x, white_Hams,  color='r')
+
+    plt.title('Ising Model vs Greedy(2), depth=3, mobility=10.')
+    plt.ylabel('Hamiltonian')
+    plt.xlabel('Turns')
+    plt.show()
     return
 
 def Ising_vs_greedy(turn=1,strategy=1,depth = 3):
@@ -252,3 +270,4 @@ def Ising_vs_greedy_with_Ham(turn=1,strategy=1,depth = 3, mobility=10.):
     plt.xlabel('Turns')
     plt.show()
     return
+

@@ -175,13 +175,32 @@ def check_endgame(current_node:Node):
     return EndGame.end
 
 def get_white_value(board):
-    x = [np.array(board).flatten()]
+    x = np.array(board).flatten()
+    xixj = np.zeros(len(x)) #sum
+
+    for i in range(len(x)):
+        for j in range(len(x)):
+            if i == j:
+                continue
+            else:
+                xixj[i] += x[i]*x[j]
+    xixj = xixj *1
     model = pickle.load(open("model/model_white.pickle","rb"))
-    y = model.predict(x)
+    y = model.predict([xixj])
     return y
 
 def get_black_value(board):
-    x = [np.array(board).flatten()]
+    x = np.array(board).flatten()
+    xixj = np.zeros(len(x)) #sum
+
+    for i in range(len(x)):
+        for j in range(len(x)):
+            if i == j:
+                continue
+            else:
+                xixj[i] += x[i]*x[j]
+    xixj = xixj *-1
     model = pickle.load(open("model/model_black.pickle","rb"))
-    y = model.predict(x)
+    y = model.predict([xixj])
     return y
+
