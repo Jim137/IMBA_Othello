@@ -9,43 +9,57 @@ import pickle
 from sklearn.metrics import accuracy_score, f1_score, recall_score, precision_score
 from .vmap import *
 
-def generate_x(boards): #load a file of boards
-    output_x = np.zeros((len(boards),64))
-    for n, board in enumerate(boards):
-        x = np.array(board) 
-        xixj = np.array(board)
-        for i in range(len(board)):
-            for j in range(len(board[i])):
-                xij = 0
-                if i-1 > -1:
-                    xij += x[i-1][j]*x[i][j]
-                if i+1 <8:
-                    xij += x[i+1][j]*x[i][j]
-                if j-1 > -1:
-                    xij += x[i][j-1]*x[i][j]
-                if j+1 < 8:
-                    xij += x[i][j+1]*x[i][j]
-                xixj[i][j] = xij 
-        xixj = xixj.flatten()
-        output_x[n][:] = xixj
-    return output_x
+def generate_white_x(boards): #load a file of boards
+    output_xs = np.zeros((len(boards),64))
+    for n, board in enumerate(boards): #each board
+        x = np.array(board).flatten()
+
+        xixj = np.zeros(len(x)) #sum
+
+        for i in range(len(x)):
+            for j in range(len(x)):
+                if i == j:
+                    continue
+                else:
+                    xixj[i] += x[i]*x[j]
+        output_xs[n][:] = xixj *1
+
+    return output_xs
+
+def generate_black_x(boards): #load a file of boards
+    output_xs = np.zeros((len(boards),64))
+    for n, board in enumerate(boards): #each board
+        x = np.array(board).flatten()
+
+        xixj = np.zeros(len(x)) #sum
+
+        for i in range(len(x)):
+            for j in range(len(x)):
+                if i == j:
+                    continue
+                else:
+                    xixj[i] += x[i]*x[j]
+        output_xs[n][:] = xixj *-1
+
+    return output_xs
 
 def generate_white_y(boards, output_x, mobility=10.):
     output_y = np.zeros(len(boards))
-    valid_move = 0    
+    valid_move = 0  
 
     for n, board in enumerate(boards):
         b = game()
         b.set_board(board)
 
-        valid_move = len(b.valid_move_black()) #think about this
-        valid_move = mobility * valid_move 
-
-        for i, x in enumerate(output_x[n]):
-            output_y[n] += x * vmap_flat[i]
+        valid_move = len(b.valid_move_white())
+        valid_move = mobility * valid_move
+        
+        for i, s in enumerate(output_x[n]):
+            output_y[n] += s * vmap_flat[i]
 
         output_y[n] -= valid_move
-    return output_y
+
+    return output_y 
 
 def generate_black_y(boards, output_x, mobility=10.):
     output_y = np.zeros(len(boards))
@@ -57,9 +71,9 @@ def generate_black_y(boards, output_x, mobility=10.):
 
         valid_move = len(b.valid_move_white())
         valid_move = mobility * valid_move
-
-        for i, x in enumerate(output_x[n]):
-            output_y[n] += x * vmap_flat[i] 
+        
+        for i, s in enumerate(output_x[n]):
+            output_y[n] += s * vmap_flat[i]
 
         output_y[n] += valid_move
 

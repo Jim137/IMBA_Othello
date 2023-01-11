@@ -1,5 +1,5 @@
 from othello.othello import *
-from algorithm.ML_copy import *
+from algorithm.ML import *
 import glob
 
 def ML_process(mobility=10.):
@@ -48,6 +48,6 @@ if __name__ == "__main__":
     # ML_process()
     # ML(depth=5)
     ML_process(mobility=10.)
-    Ising_vs_greedy(strategy=2,depth=3)
+    Ising_vs_greedy_with_Ham(strategy=2,depth=3,mobility=10.)
     # Ising_vs_greedy(-1,strategy=1,depth=3)
 

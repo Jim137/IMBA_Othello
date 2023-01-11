@@ -4,6 +4,11 @@ The game class is used to represent the game process of othello.
 import numpy as np
 from .board import Board
 
+import sys
+sys.path.append('../')
+from algorithm.vmap import vmap_flat
+# from algorithm.ML import *
+
 
 class game(Board):
     '''
@@ -100,3 +105,61 @@ class game(Board):
                 return 'Draw'
         else:
             return False
+
+    def get_Hamiltonian(self, mobility=10.):
+        board = self.get_board()
+
+        black_y = self.Hamiltonian_black(board,mobility=10.)
+        white_y = self.Hamiltonian_white(board,mobility=10.)
+
+        return black_y, white_y
+
+    def Hamiltonian_black(self,board,mobility=10.):
+        x = np.array(board).flatten()
+        output_xs = np.zeros(len(x))
+        for i in range(len(x)):
+            for j in range(len(x)):
+                if i == j:
+                    continue
+                else:
+                    output_xs[i] += x[i]*x[j]
+        output_xs *= -1
+        #----x--------
+        y = 0
+        valid_move = 0  
+
+        b = game()
+        b.set_board(board)
+        valid_move = len(b.valid_move_white())
+        valid_move = mobility * valid_move
+        
+        for i, s in enumerate(output_xs):
+            y += s * vmap_flat[i]
+
+        y += valid_move
+        return y
+
+    def Hamiltonian_white(self,board,mobility=10.):
+        x = np.array(board).flatten()
+        output_xs = np.zeros(len(x))
+        for i in range(len(x)):
+            for j in range(len(x)):
+                if i == j:
+                    continue
+                else:
+                    output_xs[i] += x[i]*x[j]
+        output_xs *= 1
+        #----x--------
+        y = 0
+        valid_move = 0  
+
+        b = game()
+        b.set_board(board)
+        valid_move = len(b.valid_move_white())
+        valid_move = mobility * valid_move
+        
+        for i, s in enumerate(output_xs):
+            y += s * vmap_flat[i]
+
+        y -= valid_move
+        return y

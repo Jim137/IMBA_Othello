@@ -2,6 +2,7 @@ import numpy as np
 from .util.game import game
 from algorithm.ML import *
 from algorithm.Minimax import *
+import matplotlib.pyplot as plt
 
 def pvp():
     match = game()
@@ -178,4 +179,72 @@ def Ising_vs_greedy(turn=1,strategy=1,depth = 3):
         print('Game over. Draw')
         return
     print('Game over. The winner is', 'ML' if (turn ==1 and match.winner()=='Black') or (turn == -1 and match.winner == 'White') else 'Greedy')
+    return
+
+def Ising_vs_greedy_with_Ham(turn=1,strategy=1,depth = 3, mobility=10.):
+    match = game()
+    black_Hams = []
+    white_Hams = []
+    match.print_board()
+    black_ham, white_ham = match.get_Hamiltonian(mobility)
+    black_Hams.append(black_ham)
+    white_Hams.append(white_ham)
+
+    while match.end == False:
+        if match.turn == -1*turn:
+            if turn == 1:
+                pos = Black_Player(match, depth)
+            else:
+                pos = White_Player(match, depth)
+        else:
+            if strategy == 1*turn:
+                if turn == 1:
+                    valid_moves = match.valid_move_white()
+                else:
+                    valid_moves = match.valid_move_black()
+                number_of_flips = []
+                for i in valid_moves:
+                    if turn == 1:
+                        number_of_flips.append(len(match.pseudo_flip_white(i)))
+                    else:
+                        number_of_flips.append(len(match.pseudo_flip_black(i)))
+                pos = valid_moves[number_of_flips.index(max(number_of_flips))]
+            elif strategy == 2:
+                if turn == 1:
+                    valid_moves = match.valid_move_white()
+                else:
+                    valid_moves = match.valid_move_black()
+                number_of_actions = []
+                for i in valid_moves:
+                    tmp_match = game()
+                    tmp_match.set_board(match.get_board())
+                    tmp_match.turn = 1*turn
+                    tmp_match.to_place(i)
+                    if turn == 1:
+                        number_of_actions.append(len(tmp_match.valid_move_black()))
+                    else:
+                        number_of_actions.append(len(tmp_match.valid_move_white()))
+                pos = valid_moves[number_of_actions.index(min(number_of_actions))]
+            else:
+                print('Invalid strategy.')
+                return
+        print('ML:' if match.turn == -1*turn else 'Greedy:',match.pos_name([pos])[0].upper())
+        if match.to_place(pos):
+            match.print_board()
+            black_ham, white_ham = match.get_Hamiltonian(mobility)
+            black_Hams.append(black_ham)
+            white_Hams.append(white_ham)
+
+        else:
+            print('Invalid position. Please try again.')
+    if match.winner() == 'Draw':
+        print('Game over. Draw')
+        return
+    print('Game over. The winner is', 'ML' if (turn ==1 and match.winner()=='Black') or (turn == -1 and match.winner == 'White') else 'Greedy')
+    x = np.linspace(0,len(black_Hams),len(black_Hams))
+    print('black', black_Hams)
+    print('white', white_Hams)
+    plt.plot(x, black_Hams, color='k')
+    plt.plot(x, white_Hams,  color='r')
+    plt.show()
     return
