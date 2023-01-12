@@ -262,10 +262,23 @@ def Ising_vs_greedy_with_Ham(turn=1,strategy=1,depth = 3, mobility=10.):
     x = np.linspace(0,len(black_Hams),len(black_Hams))
     print('black', black_Hams)
     print('white', white_Hams)
+    black_Hams_positive = list(black_Hams)
+    for i, bb in enumerate(black_Hams):
+        black_Hams_positive[i] = bb*-1
+
+    print('black_posi', black_Hams_positive)
+    plt.figure(1)
     plt.plot(x, black_Hams, color='k')
     plt.plot(x, white_Hams,  color='r')
 
     plt.title('Ising Model vs Greedy(2), depth=3, mobility=10.')
+    plt.ylabel('Hamiltonian')
+    plt.xlabel('Turns')
+    plt.figure(2)    
+    plt.plot(x, black_Hams_positive, color='k')
+    plt.plot(x, white_Hams,  color='r')
+
+    plt.title('Ising Model vs Greedy(2), depth=3, mobility=10.\n in the same sign')
     plt.ylabel('Hamiltonian')
     plt.xlabel('Turns')
     plt.show()

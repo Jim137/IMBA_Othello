@@ -44,11 +44,11 @@ if __name__ == "__main__":
     # x = generate_black_x(boards)
     # y = generate_black_y(boards, x, 10.)
     # print(y)
-    GreedyBot(2)
+    # GreedyBot(2)
     # ML_process()
     # ML(depth=5)
     # ML_process(mobility=100.)
     # ML(depth=3, mobility=100.)
-    # Ising_vs_greedy_with_Ham(strategy=2,depth=3,mobility=100.)
+    Ising_vs_greedy_with_Ham(strategy=1,depth=3,mobility=10.)
     # Ising_vs_greedy(-1,strategy=1,depth=3)
 
