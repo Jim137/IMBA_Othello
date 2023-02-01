@@ -88,9 +88,6 @@ def KNR(x,y,model_name=str):
         leaf_size=30, p=1, metric="minkowski", metric_params=None, n_jobs=None)
     knr.fit(x_train,y_train)
 
-    prediction = knr.predict(x_test)
-    # print('ytest= ', y_test, 'prediction=', prediction)
-
     pickle.dump(knr,open('model/'+model_name+'.pickle',"wb"))
     return 
     

@@ -4,9 +4,9 @@ Ising-Model-Based Algorithm for Othello Strategy with Machine Leaning.
 
 ## Background
 
-This is the final project for computational physics lab.
+This was the final project for computational physics lab.
 
-We want to construct a Hamiltonian for Othello game based on Ising Model. By minimizing the energy, we can find out the most stable state of the board to win the game. 
+We want to construct a Hamiltonian for Othello game based on Ising Model. By minimizing the energy, we can find out the most stable state of the board to win the game.
 
 ## Introduction
 

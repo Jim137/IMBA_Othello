@@ -39,16 +39,10 @@ def ML_process(mobility=10.):
     return
 
 if __name__ == "__main__":
-    # pvp()
-    # boards = load_from_txt('train_data/15x3_w.txt')[0]
-    # x = generate_black_x(boards)
-    # y = generate_black_y(boards, x, 10.)
-    # print(y)
     # GreedyBot(2)
     # ML_process()
     # ML(depth=5)
-    # ML_process(mobility=100.)
-    # ML(depth=3, mobility=100.)
-    Ising_vs_greedy_with_Ham(strategy=1,depth=3,mobility=10.)
+    ML_process(mobility=100.)
+    Ising_vs_greedy_with_Hamiltonian_plot(strategy=2,depth=5,mobility=100.)
     # Ising_vs_greedy(-1,strategy=1,depth=3)
 

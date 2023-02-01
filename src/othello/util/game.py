@@ -109,8 +109,8 @@ class game(Board):
     def get_Hamiltonian(self, mobility=10.):
         board = self.get_board()
 
-        black_y = self.Hamiltonian_black(board,mobility=10.)
-        white_y = self.Hamiltonian_white(board,mobility=10.)
+        black_y = self.Hamiltonian_black(board,mobility=mobility)
+        white_y = self.Hamiltonian_white(board,mobility=mobility)
 
         return black_y, white_y
 
