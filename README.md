@@ -10,7 +10,7 @@ We want to construct a Hamiltonian for Othello game based on Ising Model. By min
 
 ## Introduction
 
-By now, please refer to [Proposal](https://github.com/Jim137/ComputationalPhysicsLab_FinalReport/blob/master/proposal/proposal.pdf) for the introduction of this project.
+By now, please refer to [Final Report](https://www.jim137.eu.org/files/IMBA_Othello.pdf) for the introduction of this project.
 
 ## Features
 
