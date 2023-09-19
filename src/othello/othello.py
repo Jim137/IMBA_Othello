@@ -72,6 +72,7 @@ def GreedyBot(strategy=1):
                 match.pos_name(match.valid_move_black())).upper())
             pos = input(
                 'Please enter the position you want to place a piece: ').lower().strip()
+            pos = match.valid_pos_list(pos)
         else:
             if strategy == 1:
                 valid_moves = match.valid_move_white()
